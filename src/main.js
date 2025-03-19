@@ -1,9 +1,9 @@
 import './style.css'
-import pcUrl from '../assets/pc.glb?url';
-import deskUrl from '../assets/desk.glb?url';
-import chairUrl from '../assets/chair.glb?url';
-import bedUrl from '../assets/untitled.glb?url';
-import monitorUrl from '../assets/monitor.glb?url';
+import pcUrl from '/Website/assets/pc.glb?url';
+import deskUrl from '/Website/assets/desk.glb?url';
+import chairUrl from '/Website/assets/chair.glb?url';
+import bedUrl from '/Website/assets/untitled.glb?url';
+import monitorUrl from '/Website/assets/monitor.glb?url';
 
 import * as THREE from 'three'
 
