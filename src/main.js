@@ -16,7 +16,7 @@ const renderer = new THREE.WebGLRenderer({
 
 const loader = new GLTFLoader();
 
-loader.load('Website/assets/untitled.glb', (gltf) => {
+loader.load('assets/untitled.glb', (gltf) => {
     const model = gltf.scene
     model.position.setX(3);
     scene.add(model);
@@ -24,7 +24,7 @@ loader.load('Website/assets/untitled.glb', (gltf) => {
     console.error('error loading gltf',error);
 });
 
-loader.load('Website/assets/desk.glb', (gltf) => {
+loader.load('assets/desk.glb', (gltf) => {
     const model = gltf.scene
     model.position.setZ(-2);
     model.rotation.set(0, -Math.PI / 2, 0); 
@@ -34,7 +34,7 @@ loader.load('Website/assets/desk.glb', (gltf) => {
 });
 
 
-loader.load('Website/assets/pc.glb', (gltf) => {
+loader.load('assets/pc.glb', (gltf) => {
     const model = gltf.scene
     model.position.set(0.88,2.3,-2);
     scene.add(model);
@@ -42,7 +42,7 @@ loader.load('Website/assets/pc.glb', (gltf) => {
     console.error('error loading gltf',error);
 });
 
-loader.load('Website/assets/monitor.glb', (gltf) => {
+loader.load('assets/monitor.glb', (gltf) => {
     const model = gltf.scene
     model.position.set(-.3,1.77,-2);
     model.rotation.set(0, Math.PI /2, 0);
@@ -52,7 +52,7 @@ loader.load('Website/assets/monitor.glb', (gltf) => {
     console.error('error loading gltf',error);
 });
 
-loader.load('Website/assets/chair.glb', (gltf) => {
+loader.load('assets/chair.glb', (gltf) => {
     const model = gltf.scene
     //model.position.set(-.3,1.77,-2);
     model.rotation.set(0, 3 *Math.PI /4, 0);
@@ -86,7 +86,7 @@ scene.add(gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const bgTexture = new THREE.TextureLoader().load('Website/space.jpg');
+const bgTexture = new THREE.TextureLoader().load('/space.jpg');
 scene.background = bgTexture;
 
 
