@@ -1,4 +1,5 @@
 import './style.css'
+import * as TWEEN from '@tweenjs/tween.js';
 import pcUrl from './pc.glb?url';
 import deskUrl from './desk.glb?url';
 import chairUrl from './chair.glb?url';
@@ -17,6 +18,10 @@ import map2Url from './map2.glb?url';
 import lampUrl from './lamp.glb?url';
 import shelfUrl from './shelf.glb?url';
 import bookUrl from './book.glb?url';
+
+
+const targetPosition = new THREE.Vector3(-10, 10, 20);
+const targetRotation = new THREE.Euler(0, Math.PI / 2, 0); 
 
 import * as THREE from 'three'
 
@@ -68,6 +73,40 @@ loader.load(deskUrl, (gltf) => {
     scene.add(model);
 },undefined, (error) =>  {
     console.error('error loading gltf',error);
+});
+
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'w' || event.key === 'W') {
+        console.log("here");
+
+        var from = {
+            x: camera.position.x,
+            y: camera.position.y,
+            z: camera.position.z
+        };
+
+        var to = {
+            x: -10,
+            y: 30,
+            z: 20
+        };
+
+
+        var tween = new TWEEN.Tween(from)
+            .to(to, 600)
+            .easing(TWEEN.Easing.Linear.None)
+            .onUpdate(function () {
+            camera.position.set(this.x, this.y, this.z);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+        })
+            .onComplete(function () {
+            controls.target.copy(scene.position);
+        })
+            .start();
+
+        //controls.enabled = false;
+        moveCamera(targetPosition, targetRotation, 2000); // Duration 2 seconds
+    }
 });
 
 
@@ -365,24 +404,36 @@ function addStar() {
     const material = new THREE.MeshStandardMaterial({color: 0xffffff});
     const star = new THREE.Mesh(geometry,material);
 
-    const [x,y,z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+    const [x,y,z] = Array(3).fill().map(() => 7 + THREE.MathUtils.randFloatSpread(93));
 
     star.position.set(x,y,z);
     scene.add(star);
+}
+function moveCamera(targetPosition, targetRotation, duration = 1000) {
+    new TWEEN.Tween(camera.position)
+        .to(targetPosition, duration)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
+
+    new TWEEN.Tween(camera.rotation)
+        .to(targetRotation, duration)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
 }
 
 Array(200).fill().forEach(addStar);
 
 function animate() {
+    TWEEN.update();
     requestAnimationFrame(animate);
 
     //torus.rotation.x += 0.01;
     //torus.rotation.y += 0.005;
     //torus.rotation.z += 0.01;
 
-    controls.update();
 
     renderer.render(scene,camera);
+    controls.update();
 }
 // In your main.js
 console.log('Window location:', window.location);
