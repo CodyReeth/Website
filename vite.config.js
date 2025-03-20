@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/'// Change to your repo name
+  base: '/Website/'// Change to your repo name
 });
