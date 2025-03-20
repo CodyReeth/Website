@@ -12,6 +12,8 @@ import doorUrl from './door.glb?url';
 import floorUrl from './floor.jpg?url';
 import ceilingUrl from './ceiling.jpg?url';
 import normalUrl from './normal.jpg?url';
+import map1Url from './map1.glb?url';
+import lampUrl from './lamp.glb?url';
 
 import * as THREE from 'three'
 
@@ -47,7 +49,8 @@ const normalTexture = textureLoader.load(normalUrl, (tex) => {
 const loader = new GLTFLoader();
 
 loader.load(bedUrl, (gltf) => {
-    const model = gltf.scene
+    const model = gltf.scene;
+    model.side = THREE.frontSide;
     model.position.setX(3);
     scene.add(model);
 },undefined, (error) =>  {
@@ -105,7 +108,7 @@ loader.load(closetUrl, (gltf) => {
 
 loader.load(laundryUrl, (gltf) => {
     const model = gltf.scene
-    model.position.set(3.75,0,4.25);
+    model.position.set(3.75,0,3.5);
     //model.rotation.set(0,  Math.PI/2, 0);
     scene.add(model);
 
@@ -125,7 +128,7 @@ loader.load(plasticUrl, (gltf) => {
 
 loader.load(boardUrl, (gltf) => {
     const model = gltf.scene
-    model.position.set(-.7,2.1,5.55);
+    model.position.set(-.7,2.8,5.55);
     //model.rotation.set(0,  Math.PI/2, 0);
     scene.add(model);
 
@@ -143,10 +146,28 @@ loader.load(doorUrl, (gltf) => {
     console.error('error loading gltf',error);
 });
 
+loader.load(map1Url, (gltf) => {
+    const model = gltf.scene
+    model.position.set(4.65,3.5,0);
+    model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(lampUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(4,0,5);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth,window.innerHeight);
-camera.position.set(9,5.5,-5);
-camera.rotation.set(0,-Math.PI/2,0);
 //-renderer.render(scene,camera);
 
 
@@ -174,7 +195,7 @@ const material3 = new THREE.MeshStandardMaterial({
 });
 //doorway
 const material4 = new THREE.MeshStandardMaterial({
-    color: 0x232b2b,
+    color: 0x000000,
     //map: wallTexture,
     //transparent:true,
     //opacity:0.9,
@@ -201,7 +222,7 @@ const wall11 = new THREE.Mesh(geometry2,material5);
 const wall12 = new THREE.Mesh(geometry2,material2);
 const doorway = new THREE.Mesh(geometry3,material4);
 
-doorway.position.set(-3.5,2.25,4.35);
+doorway.position.set(-3.75,2.25,4.35);
 doorway.rotation.set(0,Math.PI/2,0);
 
 wall1.position.set(0.4,3.5,-3.1);
@@ -248,18 +269,24 @@ scene.add(wall11);
 scene.add(wall12);
 scene.add(doorway);
 
-const pointLight = new THREE.PointLight(0xffffff,20);
+const pointLight = new THREE.PointLight(0xffffff,10);
+const pointLight2 = new THREE.PointLight(0xffffff,20);
+const pointLight3 = new THREE.PointLight(0xffffff,1);
 const ambientLight = new THREE.AmbientLight(0xffffff);
-pointLight.position.set(0,4,0);
-scene.add(pointLight, ambientLight);
+pointLight.position.set(0.5,6.5,1);
+pointLight2.position.set(0,3.5,0.25);
+pointLight3.position.set(4,3.75,5);
+scene.add(pointLight, pointLight2,pointLight3, ambientLight);
 
-const lightHelper = new THREE.PointLightHelper(pointLight);
-scene.add(lightHelper);
+//const lightHelper = new THREE.PointLightHelper(pointLight3);
+//scene.add(lightHelper);
 
 const gridHelper = new THREE.GridHelper(200,50);
 //scene.add(gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+
+camera.position.set(-15,15,15);
 
 //scene.background = bgTexture;
 
