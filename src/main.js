@@ -9,6 +9,9 @@ import laundryUrl from './laundry.glb?url';
 import plasticUrl from './plastic.glb?url';
 import boardUrl from './board.glb?url';
 import doorUrl from './door.glb?url';
+import floorUrl from './floor.jpg?url';
+import ceilingUrl from './ceiling.jpg?url';
+import normalUrl from './normal.jpg?url';
 
 import * as THREE from 'three'
 
@@ -22,6 +25,23 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg'),
+});
+
+const textureLoader = new THREE.TextureLoader();
+const floorTexture = textureLoader.load(floorUrl, (tex) => {
+    //tex.wrapS = THREE.RepeatWrapping; // Allow horizontal repetition
+    //tex.wrapT = THREE.RepeatWrapping; // Allow vertical repetition
+    //tex.repeat.set(4, 2); // Repeat the texture 4x in X, 2x in Y
+});
+const ceilingTexture = textureLoader.load(ceilingUrl, (tex) => {
+    tex.wrapS = THREE.RepeatWrapping; // Allow horizontal repetition
+    tex.wrapT = THREE.RepeatWrapping; // Allow vertical repetition
+    tex.repeat.set(4, 4); // Repeat the texture 4x in X, 2x in Y
+});
+const normalTexture = textureLoader.load(normalUrl, (tex) => {
+    tex.wrapS = THREE.RepeatWrapping; // Allow horizontal repetition
+    tex.wrapT = THREE.RepeatWrapping; // Allow vertical repetition
+    tex.repeat.set(2, 2); // Repeat the texture 4x in X, 2x in Y
 });
 
 const loader = new GLTFLoader();
@@ -125,7 +145,7 @@ loader.load(doorUrl, (gltf) => {
 
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth,window.innerHeight);
-camera.position.set(8,6,-6);
+camera.position.set(9,5.5,-5);
 camera.rotation.set(0,-Math.PI/2,0);
 //-renderer.render(scene,camera);
 
@@ -135,6 +155,8 @@ const geometry2 = new THREE.PlaneGeometry(8.7, 8.7);
 const geometry3 = new THREE.PlaneGeometry(2, 4.5);
 const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFE4,
+    normalMap: normalTexture,
+    //color: 0xb0b5ae,
     transparent:true,
     opacity:0.9,
 });
@@ -143,13 +165,24 @@ const material2 = new THREE.MeshStandardMaterial({
     transparent:true,
     opacity:0.1,
 });
+//floor
 const material3 = new THREE.MeshStandardMaterial({
-    color: 0x232b2b,
+    map: floorTexture,
+    color: 0x3b3b3b,
     //transparent:true,
     //opacity:0.9,
 });
+//doorway
 const material4 = new THREE.MeshStandardMaterial({
     color: 0x232b2b,
+    //map: wallTexture,
+    //transparent:true,
+    //opacity:0.9,
+});
+//ceiling
+const material5 = new THREE.MeshStandardMaterial({
+    map: ceilingTexture,
+    color: 0xC8C8B5,
     //transparent:true,
     //opacity:0.9,
 });
@@ -164,7 +197,7 @@ const wall7 = new THREE.Mesh(geometry,material);
 const wall8 = new THREE.Mesh(geometry,material2);
 const wall9 = new THREE.Mesh(geometry2,material3);
 const wall10 = new THREE.Mesh(geometry2,material2);
-const wall11 = new THREE.Mesh(geometry2,material);
+const wall11 = new THREE.Mesh(geometry2,material5);
 const wall12 = new THREE.Mesh(geometry2,material2);
 const doorway = new THREE.Mesh(geometry3,material4);
 
@@ -228,7 +261,6 @@ const gridHelper = new THREE.GridHelper(200,50);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-//const bgTexture = new THREE.TextureLoader().load('/Website/space.jpg');
 //scene.background = bgTexture;
 
 
