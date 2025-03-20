@@ -50,7 +50,7 @@ const loader = new GLTFLoader();
 
 loader.load(bedUrl, (gltf) => {
     const model = gltf.scene;
-    model.side = THREE.frontSide;
+    //model.side = THREE.frontSide;
     model.position.setX(3);
     scene.add(model);
 },undefined, (error) =>  {
