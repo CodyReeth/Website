@@ -5,6 +5,9 @@ import chairUrl from './chair.glb?url';
 import bedUrl from './untitled.glb?url';
 import monitorUrl from './monitor.glb?url';
 import closetUrl from './closet.glb?url';
+import laundryUrl from './laundry.glb?url';
+import plasticUrl from './plastic.glb?url';
+import boardUrl from './board.glb?url';
 
 import * as THREE from 'three'
 
@@ -79,9 +82,40 @@ loader.load(closetUrl, (gltf) => {
     console.error('error loading gltf',error);
 });
 
+loader.load(laundryUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(3.75,0,4.25);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(plasticUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(2.25,0,4.25);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(boardUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(-.7,2.1,5.55);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth,window.innerHeight);
-camera.position.set(-2,7,5);
+camera.position.set(8,6,-6);
+camera.rotation.set(0,-Math.PI/2,0);
 //-renderer.render(scene,camera);
 
 
