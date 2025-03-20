@@ -8,6 +8,7 @@ import closetUrl from './closet.glb?url';
 import laundryUrl from './laundry.glb?url';
 import plasticUrl from './plastic.glb?url';
 import boardUrl from './board.glb?url';
+import doorUrl from './door.glb?url';
 
 import * as THREE from 'three'
 
@@ -112,6 +113,16 @@ loader.load(boardUrl, (gltf) => {
     console.error('error loading gltf',error);
 });
 
+loader.load(doorUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(-3.65,0,4.45);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth,window.innerHeight);
 camera.position.set(8,6,-6);
@@ -121,6 +132,7 @@ camera.rotation.set(0,-Math.PI/2,0);
 
 const geometry = new THREE.PlaneGeometry(8.7, 7);
 const geometry2 = new THREE.PlaneGeometry(8.7, 8.7);
+const geometry3 = new THREE.PlaneGeometry(2, 4.5);
 const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFE4,
     transparent:true,
@@ -132,6 +144,11 @@ const material2 = new THREE.MeshStandardMaterial({
     opacity:0.1,
 });
 const material3 = new THREE.MeshStandardMaterial({
+    color: 0x232b2b,
+    //transparent:true,
+    //opacity:0.9,
+});
+const material4 = new THREE.MeshStandardMaterial({
     color: 0x232b2b,
     //transparent:true,
     //opacity:0.9,
@@ -149,6 +166,10 @@ const wall9 = new THREE.Mesh(geometry2,material3);
 const wall10 = new THREE.Mesh(geometry2,material2);
 const wall11 = new THREE.Mesh(geometry2,material);
 const wall12 = new THREE.Mesh(geometry2,material2);
+const doorway = new THREE.Mesh(geometry3,material4);
+
+doorway.position.set(-3.5,2.25,4.35);
+doorway.rotation.set(0,Math.PI/2,0);
 
 wall1.position.set(0.4,3.5,-3.1);
 wall2.position.set(0.4,3.5,-3.1);
@@ -192,6 +213,7 @@ scene.add(wall9);
 scene.add(wall10);
 scene.add(wall11);
 scene.add(wall12);
+scene.add(doorway);
 
 const pointLight = new THREE.PointLight(0xffffff,20);
 const ambientLight = new THREE.AmbientLight(0xffffff);
