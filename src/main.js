@@ -13,7 +13,10 @@ import floorUrl from './floor.jpg?url';
 import ceilingUrl from './ceiling.jpg?url';
 import normalUrl from './normal.jpg?url';
 import map1Url from './map1.glb?url';
+import map2Url from './map2.glb?url';
 import lampUrl from './lamp.glb?url';
+import shelfUrl from './shelf.glb?url';
+import bookUrl from './book.glb?url';
 
 import * as THREE from 'three'
 
@@ -156,6 +159,16 @@ loader.load(map1Url, (gltf) => {
     console.error('error loading gltf',error);
 });
 
+loader.load(map2Url, (gltf) => {
+    const model = gltf.scene
+    model.position.set(-0.5,3.65,-3.05);
+    model.rotation.set(0,  Math.PI, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
 loader.load(lampUrl, (gltf) => {
     const model = gltf.scene
     model.position.set(4,0,5);
@@ -165,6 +178,55 @@ loader.load(lampUrl, (gltf) => {
 },undefined, (error) =>  {
     console.error('error loading gltf',error);
 });
+
+loader.load(shelfUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(2.3,2.8,5.6);
+    //model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(bookUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(1.2,3.2,5.6);
+    model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(bookUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(1.31,3.2,5.6);
+    model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+
+loader.load(bookUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(1.42,3.2,5.6);
+    model.rotation.set(0,  Math.PI/2, 0);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});
+/*loader.load(bookUrl, (gltf) => {
+    const model = gltf.scene
+    model.position.set(1.54,3.2,5.6);
+    model.rotation.set(-3*Math.PI/8,  Math.PI/4, Math.PI/4);
+    scene.add(model);
+
+},undefined, (error) =>  {
+    console.error('error loading gltf',error);
+});*/
 
 renderer.setPixelRatio( window.devicePixelRatio);
 renderer.setSize(window.innerWidth,window.innerHeight);
