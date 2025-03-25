@@ -1,5 +1,4 @@
 import './style.css'
-import * as TWEEN from '@tweenjs/tween.js';
 import pcUrl from './pc.glb?url';
 import deskUrl from './desk.glb?url';
 import chairUrl from './chair.glb?url';
@@ -551,7 +550,6 @@ function logCameraState(camera) {
 Array(200).fill().forEach(addStar);
 
 function animate() {
-    TWEEN.update();
     requestAnimationFrame(animate);
 
     //torus.rotation.x += 0.01;
