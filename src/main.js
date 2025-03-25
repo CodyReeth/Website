@@ -170,13 +170,14 @@ function setupRaycast(scene, camera, renderer, gltfModel) {
             while (parent) {
                 if (parent === gltfModel) {
                     console.log("The third object clicked is part of the GLTF model:", thirdObject);
-                    controls.enabled = false;
+                    //controls.enabled = false;
 
                     const targetPosition = new THREE.Vector3(-0.82, 2.49, -0.53);
                     const targetRotation = new THREE.Euler(-0, -0, 0);
 
                     moveCamera(camera, targetPosition, targetRotation, 2);
                     controls.target.set(-0.82,2.49,-1);
+                    //controls.enabled = true;
                     break;
                 }
                 parent = parent.parent;
@@ -509,6 +510,7 @@ camera.position.set(-15,15,15);
  * */
 
 function moveCamera(camera, targetPosition, targetRotation, duration = 1) {
+    controls.enabled = false;
     gsap.to(camera.position, {
         x: targetPosition.x,
         y: targetPosition.y,
@@ -522,7 +524,10 @@ function moveCamera(camera, targetPosition, targetRotation, duration = 1) {
         y: targetRotation.y,
         z: targetRotation.z,
         duration: duration,
-        ease: "power2.out"
+        ease: "power2.out",
+        onComplete: () => {
+            controls.enabled = true; // Re-enable OrbitControls after animation
+        }
     });
 }
 //document.body.onscroll = some function
