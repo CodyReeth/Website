@@ -20,10 +20,10 @@ import shelfUrl from './shelf.glb?url';
 import bookUrl from './book.glb?url';
 
 
-const targetPosition = new THREE.Vector3(-10, 10, 20);
-const targetRotation = new THREE.Euler(0, Math.PI / 2, 0); 
 
 import * as THREE from 'three'
+
+import { gsap } from "gsap";
 
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
@@ -78,36 +78,28 @@ loader.load(deskUrl, (gltf) => {
 window.addEventListener('keydown', (event) => {
     if (event.key === 'w' || event.key === 'W') {
         console.log("here");
+        controls.enabled = false;
 
-        var from = {
-            x: camera.position.x,
-            y: camera.position.y,
-            z: camera.position.z
-        };
+        const targetPosition = new THREE.Vector3(-0.82, 2.49, -0.53);
+        const targetRotation = new THREE.Euler(-0, -0, 0);
 
-        var to = {
-            x: -10,
-            y: 30,
-            z: 20
-        };
+        moveCamera(camera, targetPosition, targetRotation, 2);
+        controls.target.set(-0.82,2.49,-1);
+        //controls.update();
 
 
-        var tween = new TWEEN.Tween(from)
-            .to(to, 600)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(function () {
-            camera.position.set(this.x, this.y, this.z);
-            camera.lookAt(new THREE.Vector3(0, 0, 0));
-        })
-            .onComplete(function () {
-            controls.target.copy(scene.position);
-        })
-            .start();
 
-        //controls.enabled = false;
-        moveCamera(targetPosition, targetRotation, 2000); // Duration 2 seconds
+    } else if (event.key === 's' || event.key === 'S') {
+        console.log("s press");
+        logCameraState(camera);
+        controls.enabled = true;
+    }else if (event.key === 'l' || event.key === 'L') {
+        console.log("l press");
+        //controls.enabled = true;
     }
+
 });
+
 
 
 loader.load(pcUrl, (gltf) => {
@@ -397,6 +389,23 @@ camera.position.set(-15,15,15);
  new mesh( { map: texture, normalMap: texture
  * */
 
+function moveCamera(camera, targetPosition, targetRotation, duration = 1) {
+    gsap.to(camera.position, {
+        x: targetPosition.x,
+        y: targetPosition.y,
+        z: targetPosition.z,
+        duration: duration,
+        ease: "power2.out"
+    });
+
+    gsap.to(camera.rotation, {
+        x: targetRotation.x,
+        y: targetRotation.y,
+        z: targetRotation.z,
+        duration: duration,
+        ease: "power2.out"
+    });
+}
 //document.body.onscroll = some function
 
 function addStar() {
@@ -409,16 +418,10 @@ function addStar() {
     star.position.set(x,y,z);
     scene.add(star);
 }
-function moveCamera(targetPosition, targetRotation, duration = 1000) {
-    new TWEEN.Tween(camera.position)
-        .to(targetPosition, duration)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .start();
 
-    new TWEEN.Tween(camera.rotation)
-        .to(targetRotation, duration)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .start();
+function logCameraState(camera) {
+    console.log(`Position: { x: ${camera.position.x.toFixed(2)}, y: ${camera.position.y.toFixed(2)}, z: ${camera.position.z.toFixed(2)} }`);
+    console.log(`Rotation: { x: ${camera.rotation.x.toFixed(2)}, y: ${camera.rotation.y.toFixed(2)}, z: ${camera.rotation.z.toFixed(2)} }`);
 }
 
 Array(200).fill().forEach(addStar);

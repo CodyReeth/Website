@@ -10,10 +10,13 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "ghpages": "^0.0.10",
     "vite": "^6.2.0"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^25.0.0",
+    "gsap": "^3.12.7",
     "three": "^0.174.0"
   }
 }
