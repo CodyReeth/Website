@@ -86,9 +86,7 @@ window.addEventListener('keydown', (event) => {
         moveCamera(camera, targetPosition, targetRotation, 2);
         controls.target.set(-0.82,2.49,-1);
         //controls.update();
-
-
-
+        
     } else if (event.key === 's' || event.key === 'S') {
         console.log("s press");
         logCameraState(camera);
@@ -99,7 +97,127 @@ window.addEventListener('keydown', (event) => {
     }
 
 });
+/*function setupRaycast(scene, camera, renderer, gltfModel) {
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
 
+    function onClick(event) {
+        // Clear previous clicked objects
+        const clickedObjects = [];
+
+        // Convert mouse click to normalized device coordinates (-1 to +1)
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // Perform raycasting
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true); // Recursive search in children
+
+        // Store intersected objects' world positions
+        intersects.forEach(intersection => {
+            const object = intersection.object;
+            if (object.isMesh) {
+                clickedObjects.push(object);
+            }
+        });
+
+        console.log("Clicked Objects:", clickedObjects);
+
+        // Check if the third object in the list belongs to the GLTF model
+        if (clickedObjects.length >= 3 && gltfModel && gltfModel.contains(clickedObjects[2])) {
+            console.log("The third object clicked is from the GLTF model:", clickedObjects[2]);
+        }
+    }
+
+    // Add event listener
+    renderer.domElement.addEventListener("click", onClick);
+}*/
+
+
+function setupRaycast(scene, camera, renderer, gltfModel) {
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function onClick(event) {
+        // Clear previous clicked objects
+        const clickedObjects = [];
+
+        // Convert mouse click to normalized device coordinates (-1 to +1)
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // Perform raycasting
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true); // Recursive search in children
+
+        // Store intersected mesh objects
+        intersects.forEach(intersection => {
+            if (intersection.object.isMesh) {
+                clickedObjects.push(intersection.object);
+            }
+        });
+
+        console.log("Clicked Objects:", clickedObjects);
+
+        // Check if the third object (index 2) belongs to the GLTF model
+        if (clickedObjects.length >= 3) {
+            const thirdObject = clickedObjects[2];
+
+            // Check if the third object is inside the GLTF model
+            let parent = thirdObject;
+            while (parent) {
+                if (parent === gltfModel) {
+                    console.log("The third object clicked is part of the GLTF model:", thirdObject);
+                    controls.enabled = false;
+
+                    const targetPosition = new THREE.Vector3(-0.82, 2.49, -0.53);
+                    const targetRotation = new THREE.Euler(-0, -0, 0);
+
+                    moveCamera(camera, targetPosition, targetRotation, 2);
+                    controls.target.set(-0.82,2.49,-1);
+                    break;
+                }
+                parent = parent.parent;
+            }
+        }
+    }
+
+    // Add event listener
+    renderer.domElement.addEventListener("click", onClick);
+}
+
+/*function setupRaycast(scene, camera, renderer) {
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const clickedObjects = []; // Stores encountered objects
+
+    function onClick(event) {
+        // Convert mouse click to normalized device coordinates (-1 to +1)
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // Perform raycasting
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true); // Recursive search in children
+
+        // Filter GLTF objects and store their world positions
+        intersects.forEach(intersection => {
+            const object = intersection.object;
+            if (object.isMesh) {
+                clickedObjects.push(object.position.clone());
+            }
+        });
+
+        console.log("Clicked Objects:", clickedObjects);
+    }
+
+    // Add event listener
+    renderer.domElement.addEventListener("click", onClick);
+}
+*/
 
 
 loader.load(pcUrl, (gltf) => {
@@ -125,6 +243,7 @@ loader.load(chairUrl, (gltf) => {
     model.position.set(-.5,0,0);
     model.rotation.set(0, 3 *Math.PI /4, 0);
     scene.add(model);
+    setupRaycast(scene,camera,renderer,model);
 
 },undefined, (error) =>  {
     console.error('error loading gltf',error);
